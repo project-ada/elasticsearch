@@ -4,7 +4,7 @@ FROM phusion/baseimage:latest
 RUN curl https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 
 ENV ELASTICSEARCH_VERSION 2.2.2
-ENV ELASTICSEARCH_REPO_BASE http://packages.elastic.co/2.x/debian
+ENV ELASTICSEARCH_REPO_BASE http://packages.elastic.co/elasticsearch/2.x/debian
 
 RUN echo "deb $ELASTICSEARCH_REPO_BASE stable main" > /etc/apt/sources.list.d/elasticsearch-2.x.list
 
