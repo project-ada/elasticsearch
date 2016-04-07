@@ -30,7 +30,7 @@ RUN set -ex \
 		mkdir -p "$path"; \
 	done
 COPY elasticsearch-riemann-plugin-2.1.0.zip /usr/share/elasticsearch/elasticsearch-riemann-plugin-2.1.0.zip
-RUN plugin install file:elasticsearch-riemann-plugin-2.1.0.zip
+RUN plugin install file:/usr/share/elasticsearch/elasticsearch-riemann-plugin-2.1.0.zip
 
 COPY config /usr/share/elasticsearch/config
 COPY run /etc/service/elasticsearch/run
