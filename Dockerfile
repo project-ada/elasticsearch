@@ -1,7 +1,7 @@
 FROM phusion/baseimage:latest
 
 #RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4
-RUN wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
+RUN curl https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 
 ENV ELASTICSEARCH_VERSION 2.2.2
 ENV ELASTICSEARCH_REPO_BASE http://packages.elastic.co/2.x/debian
