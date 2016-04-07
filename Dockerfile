@@ -6,10 +6,11 @@ RUN wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 ENV ELASTICSEARCH_VERSION 2.2.2
 ENV ELASTICSEARCH_REPO_BASE http://packages.elastic.co/2.x/debian
 
-RUN echo "deb $ELASTICSEARCH_REPO_BASE stable main" > /etc/apt/sources.list.d/elasticsearch.list
+RUN echo "deb $ELASTICSEARCH_REPO_BASE stable main" > /etc/apt/sources.list.d/elasticsearch-2.x.list
 
 RUN \
   sed -i '0,/trusty main/s/restricted//' /etc/apt/sources.list && \
+  add-apt-repository ppa:openjdk-r/ppa && \
   apt-get update && \
   apt-get install -y openjdk-8-jdk
 
@@ -28,8 +29,8 @@ RUN set -ex \
 	; do \
 		mkdir -p "$path"; \
 	done
-
-RUN plugin -url https://github.com/searchly/elasticsearch-monitoring-riemann-plugin/releases/download/elasticsearch-riemann-plugin-1.7.2/elasticsearch-riemann-plugin-1.7.2.zip -install riemann
+COPY elasticsearch-riemann-plugin-2.1.0.zip /usr/share/elasticsearch/elasticsearch-riemann-plugin-2.1.0.zip
+RUN plugin install file:elasticsearch-riemann-plugin-2.1.0.zip
 
 COPY config /usr/share/elasticsearch/config
 COPY run /etc/service/elasticsearch/run
