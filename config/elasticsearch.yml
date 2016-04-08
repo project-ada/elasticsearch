@@ -2,10 +2,14 @@
 #cloud.kubernetes.namespace: ${KUBERNETES_NAMESPACE}
 #discovery.type: kubernetes
 
+network.host: "0.0.0.0"
+
 path.data: '/data/elasticsearch'
 script.engine.groovy.inline.aggs: on
 http.cors.enabled: true
 
-metrics.riemann.every: 60
+index.number_of_replicas: 0
+
+#metrics.riemann.every: 60
 metrics.riemann.host: ${RIEMANN_HOST:-localhost}
 metrics.riemann.tags: "elasticsearch"

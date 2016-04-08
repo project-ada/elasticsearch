@@ -1,5 +1,14 @@
 FROM phusion/baseimage:latest
 
+RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
+RUN arch="$(dpkg --print-architecture)" \
+       && set -x \
+       && curl -o /usr/local/bin/gosu -fSL "https://github.com/tianon/gosu/releases/download/1.3/gosu-$arch" \
+       && curl -o /usr/local/bin/gosu.asc -fSL "https://github.com/tianon/gosu/releases/download/1.3/gosu-$arch.asc" \
+       && gpg --verify /usr/local/bin/gosu.asc \
+       && rm /usr/local/bin/gosu.asc \
+       && chmod +x /usr/local/bin/gosu
+
 RUN curl https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 
 ENV ELASTICSEARCH_VERSION 2.2.2
@@ -25,11 +34,12 @@ RUN set -ex \
 		/usr/share/elasticsearch/config/scripts \
 	; do \
 		mkdir -p "$path"; \
+		chown -R elasticsearch:elasticsearch "$path"; \
 	done
 COPY elasticsearch-riemann-plugin-2.1.1-SNAPSHOT.zip /usr/share/elasticsearch/elasticsearch-riemann-plugin-2.1.1-SNAPSHOT.zip
 RUN /usr/share/elasticsearch/bin/plugin install file:/usr/share/elasticsearch/elasticsearch-riemann-plugin-2.1.1-SNAPSHOT.zip
 
-COPY config /usr/share/elasticsearch/config
+COPY config/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml
 COPY run /etc/service/elasticsearch/run
 
 EXPOSE 9200 9300
