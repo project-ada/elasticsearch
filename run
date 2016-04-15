@@ -4,4 +4,4 @@ set -e
 
 mkdir -p /data/elasticsearch
 cd /usr/share/elasticsearch
-exec gosu ./bin/elasticsearch --default.path.logs=/var/log/elasticsearch --default.path.data=/data/elasticsearch --default.path.conf=/etc/elasticsearch
+exec gosu elasticsearch ./bin/elasticsearch --default.path.logs=/var/log/elasticsearch --default.path.data=/data/elasticsearch --default.path.conf=/etc/elasticsearch
