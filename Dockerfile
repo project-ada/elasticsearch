@@ -38,6 +38,7 @@ RUN set -ex \
 	done
 COPY elasticsearch-riemann-plugin-2.1.1-SNAPSHOT.zip /usr/share/elasticsearch/elasticsearch-riemann-plugin-2.1.1-SNAPSHOT.zip
 RUN /usr/share/elasticsearch/bin/plugin install file:/usr/share/elasticsearch/elasticsearch-riemann-plugin-2.1.1-SNAPSHOT.zip
+RUN chsh -s /bin/bash elasticsearch
 
 COPY config/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml
 COPY run /etc/service/elasticsearch/run
