@@ -13,9 +13,14 @@ node {
         app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
         app.push("${env.BRANCH_NAME}-latest")
         sh 'env'
-        slackSend channel: '#ci-cd', color: 'good', message: "Pushed ${image_name}:${env.BRANCH_NAME}-${env.BUILD_NUMBER} with changes by ${changes_by}", teamDomain:              'projectada', token: 'eqVk8oJI8eMqp8eCaLWXwmfI'
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'd72bb5b4-e183-4a45-b64b-2502290a24a6', passwordVariable: 'SLACK_TOKEN', usernameVariable: 'SLACK_DOMAIN']]) {
+            slackSend channel: '#ci-cd', color: 'good', message: "Pushed ${image_name}:${env.BRANCH_NAME}-${env.BUILD_NUMBER} with changes by ${changes_by}", teamDomain: ${SLACK_DOMAIN}, token: ${SLACK_TOKEN}
+        }
+        
         sh "curl http://artemis.ada.engineering:5000/newimage/${image_name}/${env.BRANCH_NAME}/${env.BUILD_NUMBER}"
     } catch (err) {
-        slackSend channel: '#ci-cd', color: 'danger', message: "Failure building ${image_name}: ${err}\n(changes by ${changes_by})\n${env.BUILD_URL}", teamDomain: 'projectada',   token: 'eqVk8oJI8eMqp8eCaLWXwmfI'
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'd72bb5b4-e183-4a45-b64b-2502290a24a6', passwordVariable: 'SLACK_TOKEN', usernameVariable: 'SLACK_DOMAIN']]) {
+            slackSend channel: '#ci-cd', color: 'good', message: "Failure building ${image_name}: ${err}\n(changes by ${changes_by})\n${env.BUILD_URL}", teamDomain: ${SLACK_DOMAIN}, token: ${SLACK_TOKEN}
+        }
     }
 }
