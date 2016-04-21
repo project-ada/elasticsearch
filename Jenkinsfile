@@ -1,11 +1,10 @@
 node {
     def image_name = 'adaengineering/elasticsearch'
+    stage 'Checkout'
+    checkout scm
     sh 'git --no-pager log -1 --format=%an > committer.txt'
     def changes_by = readFile('committer.txt').trim()
     try {
-        stage 'Checkout'
-        checkout scm
-
         stage 'Build'
         def app = docker.build("${image_name}")
 
